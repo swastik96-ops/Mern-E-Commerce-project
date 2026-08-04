@@ -49,25 +49,25 @@ const Profile = () => {
     <div className="container mx-auto p-4 mt-[10rem]">
       <div className="flex justify-center align-center md:flex md:space-x-4">
         <div className="md:w-1/3">
-          <h2 className="text-2xl font-semibold mb-4">Update Profile</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-[#FF8DA1]">Update Profile</h2>
           <form onSubmit={submitHandler}>
             <div className="mb-4">
               <label className="block text-white mb-2">Name</label>
               <input
                 type="text"
                 placeholder="Enter name"
-                className="form-input p-4 rounded-sm w-full"
+                className="form-input p-4 rounded-sm w-full text-white"
                 value={username}
                 onChange={(e) => setUserName(e.target.value)}
               />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 ">
               <label className="block text-white mb-2">Email Address</label>
               <input
                 type="email"
                 placeholder="Enter email"
-                className="form-input p-4 rounded-sm w-full"
+                className="form-input p-4 rounded-sm w-full text-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -78,7 +78,7 @@ const Profile = () => {
               <input
                 type="password"
                 placeholder="Enter password"
-                className="form-input p-4 rounded-sm w-full"
+                className="form-input p-4 rounded-sm w-full text-white"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -89,7 +89,7 @@ const Profile = () => {
               <input
                 type="password"
                 placeholder="Confirm password"
-                className="form-input p-4 rounded-sm w-full"
+                className="form-input p-4 rounded-sm w-full text-white"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />

@@ -19,10 +19,10 @@ const AllProducts = () => {
       <div className="container mx-[9rem]">
         <div className="flex flex-col  md:flex-row">
           <div className="p-3">
-            <div className="ml-[2rem] text-xl font-bold h-12">
+            <div className="ml-[2rem] text-xl font-bold h-12 text-[#FF8DA1]">
               All Products ({products.length})
             </div>
-            <div className="flex flex-wrap justify-around items-center">
+            <div className="flex flex-wrap justify-around items-center text-white">
               {products.map((product) => (
                 <Link
                   key={product._id}
@@ -37,7 +37,7 @@ const AllProducts = () => {
                     />
                     <div className="p-4 flex flex-col justify-around">
                       <div className="flex justify-between">
-                        <h5 className="text-xl font-semibold mb-2">
+                        <h5 className="text-xl font-semibold mb-2 text-white">
                           {product?.name}
                         </h5>
 

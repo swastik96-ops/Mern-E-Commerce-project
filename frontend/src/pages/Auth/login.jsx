@@ -43,7 +43,7 @@ const Login = () => {
     <div>
       <section className="pl-[10rem] flex flex-wrap">
         <div className="mr-[4rem] mt-[5rem]">
-          <h1 className="text-2xl font-semibold mb-4">Sign In</h1>
+          <h1 className="text-2xl font-semibold mb-4 text-white">Sign In</h1>
 
           <form onSubmit={submitHandler} className="container w-[40rem]">
             <div className="my-[2rem]">
@@ -56,7 +56,7 @@ const Login = () => {
               <input
                 type="email"
                 id="email"
-                className="mt-1 p-2 border rounded w-full"
+                className="mt-1 p-2 border rounded w-full text-white"
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -73,7 +73,7 @@ const Login = () => {
               <input
                 type="password"
                 id="password"
-                className="mt-1 p-2 border rounded w-full"
+                className="mt-1 p-2 border rounded w-full text-white"
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
