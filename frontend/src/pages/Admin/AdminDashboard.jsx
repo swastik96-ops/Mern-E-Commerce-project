@@ -11,16 +11,49 @@ import AdminMenu from "./AdminMenu";
 import OrderList from "./OrderList";
 import Loader from "../../components/Loader";
 
+const StatCard = ({ icon, label, value, isLoading, isError }) => (
+  <div className="rounded-lg bg-black p-5 w-[20rem] mt-5">
+    <div className="font-bold rounded-full w-[3rem] bg-pink-500 text-center p-3">
+      {icon}
+    </div>
+    <p className="mt-5">{label}</p>
+    <h1 className="text-xl font-bold">
+      {isLoading ? (
+        <Loader />
+      ) : isError ? (
+        <span className="text-red-400 text-sm">Failed to load</span>
+      ) : (
+        value
+      )}
+    </h1>
+  </div>
+);
+
 const AdminDashboard = () => {
-  const { data: sales, isLoading } = useGetTotalSalesQuery();
-  const { data: customers, isLoading: loading } = useGetUsersQuery();
-  const { data: orders, isLoading: loadingTwo } = useGetTotalOrdersQuery();
+  const {
+    data: sales,
+    isLoading: salesLoading,
+    isError: salesError,
+  } = useGetTotalSalesQuery();
+  const {
+    data: customers,
+    isLoading: customersLoading,
+    isError: customersError,
+  } = useGetUsersQuery();
+  const {
+    data: orders,
+    isLoading: ordersLoading,
+    isError: ordersError,
+  } = useGetTotalOrdersQuery();
   const { data: salesDetail } = useGetTotalSalesByDateQuery();
 
   const [state, setState] = useState({
     options: {
       chart: {
-        type: "line",
+        type: "bar",
+      },
+      theme: {             
+      mode: "dark",
       },
       tooltip: {
         theme: "dark",
@@ -66,7 +99,7 @@ const AdminDashboard = () => {
   });
 
   useEffect(() => {
-    if (salesDetail) {
+    if (salesDetail && salesDetail.length > 0) {
       const formattedSalesDate = salesDetail.map((item) => ({
         x: item._id,
         y: item.totalSales,
@@ -77,10 +110,10 @@ const AdminDashboard = () => {
         options: {
           ...prevState.options,
           xaxis: {
+            ...prevState.options.xaxis,
             categories: formattedSalesDate.map((item) => item.x),
           },
         },
-
         series: [
           { name: "Sales", data: formattedSalesDate.map((item) => item.y) },
         ],
@@ -88,51 +121,48 @@ const AdminDashboard = () => {
     }
   }, [salesDetail]);
 
+  const hasChartData = state.series[0]?.data?.length > 0;
+
   return (
     <>
       <AdminMenu />
 
-      <section className="xl:ml-[4rem] md:ml-[0rem]">
+      <section className="xl:ml-[4rem] md:ml-[0rem] text-white">
         <div className="w-[80%] flex justify-around flex-wrap">
-          <div className="rounded-lg bg-black p-5 w-[20rem] mt-5">
-            <div className="font-bold rounded-full w-[3rem] bg-pink-500 text-center p-3">
-              $
-            </div>
-
-            <p className="mt-5">Sales</p>
-            <h1 className="text-xl font-bold">
-              $ {isLoading ? <Loader /> : sales.totalSales.toFixed(2)}
-            </h1>
-          </div>
-          <div className="rounded-lg bg-black p-5 w-[20rem] mt-5">
-            <div className="font-bold rounded-full w-[3rem] bg-pink-500 text-center p-3">
-              $
-            </div>
-
-            <p className="mt-5">Customers</p>
-            <h1 className="text-xl font-bold">
-              $ {isLoading ? <Loader /> : customers?.length}
-            </h1>
-          </div>
-          <div className="rounded-lg bg-black p-5 w-[20rem] mt-5">
-            <div className="font-bold rounded-full w-[3rem] bg-pink-500 text-center p-3">
-              $
-            </div>
-
-            <p className="mt-5">All Orders</p>
-            <h1 className="text-xl font-bold">
-              $ {isLoading ? <Loader /> : orders?.totalOrders}
-            </h1>
-          </div>
+          <StatCard
+            icon="$"
+            label="Sales"
+            value={`$ ${sales?.totalSales?.toFixed(2) ?? "0.00"}`}
+            isLoading={salesLoading}
+            isError={salesError}
+          />
+          <StatCard
+            icon="👤"
+            label="Customers"
+            value={customers?.length ?? 0}
+            isLoading={customersLoading}
+            isError={customersError}
+          />
+          <StatCard
+            icon="📦"
+            label="All Orders"
+            value={orders?.totalOrders ?? 0}
+            isLoading={ordersLoading}
+            isError={ordersError}
+          />
         </div>
 
         <div className="ml-[10rem] mt-[4rem]">
-          <Chart
-            options={state.options}
-            series={state.series}
-            type="bar"
-            width="70%"
-          />
+          {hasChartData ? (
+            <Chart
+              options={state.options}
+              series={state.series}
+              type="bar"
+              width="70%"
+            />
+          ) : (
+            <p className="text-gray-400">No sales data to display yet.</p>
+          )}
         </div>
 
         <div className="mt-[4rem]">

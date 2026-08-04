@@ -45,12 +45,12 @@ const PlaceOrder = () => {
     <>
       <ProgressSteps step1 step2 step3 />
 
-      <div className="container mx-auto mt-8">
+      <div className="max-w-6xl mx-auto mt-8 px-6">
         {cart.cartItems.length === 0 ? (
           <Message>Your cart is empty</Message>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
+            <table className="w-full border-collapse text-white">
               <thead>
                 <tr>
                   <td className="px-1 py-2 text-left align-top">Image</td>
@@ -66,14 +66,18 @@ const PlaceOrder = () => {
                   <tr key={index}>
                     <td className="p-2">
                       <img
-                        src={item.image}
+                        src={`http://localhost:5000${item.image}`}
                         alt={item.name}
                         className="w-16 h-16 object-cover"
                       />
                     </td>
 
                     <td className="p-2">
-                      <Link to={`/product/${item.product}`}>{item.name}</Link>
+                      <Link
+                        to={`/product/${item.product}`}
+                        className="text-white hover:text-pink-400 transition-colors">
+                        {item.name}
+                      </Link>
                     </td>
                     <td className="p-2">{item.qty}</td>
                     <td className="p-2">{item.price.toFixed(2)}</td>
@@ -87,49 +91,59 @@ const PlaceOrder = () => {
           </div>
         )}
 
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-5">Order Summary</h2>
-          <div className="flex justify-between flex-wrap p-8 bg-[#181818]">
-            <ul className="text-lg">
-              <li>
-                <span className="font-semibold mb-4">Items:</span> $
-                {cart.itemsPrice}
-              </li>
-              <li>
-                <span className="font-semibold mb-4">Shipping:</span> $
-                {cart.shippingPrice}
-              </li>
-              <li>
-                <span className="font-semibold mb-4">Tax:</span> $
-                {cart.taxPrice}
-              </li>
-              <li>
-                <span className="font-semibold mb-4">Total:</span> $
-                {cart.totalPrice}
-              </li>
-            </ul>
+   <div className="mt-8">
+    <h2 className="text-2xl font-semibold mb-5 text-white">
+      Order Summary
+    </h2>
 
-            {error && <Message variant="danger">{error.data.message}</Message>}
+  <div className="flex justify-between flex-wrap gap-8 p-8 bg-[#181818] rounded-xl text-white">
+    <ul className="text-lg text-gray-300 space-y-3">
+      <li>
+        <span className="font-semibold text-white">Items:</span> ${cart.itemsPrice}
+      </li>
+      <li>
+        <span className="font-semibold text-white">Shipping:</span> ${cart.shippingPrice}
+      </li>
+      <li>
+        <span className="font-semibold text-white">Tax:</span> ${cart.taxPrice}
+      </li>
+      <li>
+        <span className="font-semibold text-white">Total:</span> ${cart.totalPrice}
+      </li>
+    </ul>
 
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Shipping</h2>
-              <p>
-                <strong>Address:</strong> {cart.shippingAddress.address},{" "}
-                {cart.shippingAddress.city} {cart.shippingAddress.postalCode},{" "}
-                {cart.shippingAddress.country}
-              </p>
-            </div>
+    {error && <Message variant="danger">{error.data.message}</Message>}
 
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Payment Method</h2>
-              <strong>Method:</strong> {cart.paymentMethod}
-            </div>
-          </div>
+    <div className="text-gray-300">
+      <h2 className="text-2xl font-semibold mb-4 text-white">
+        Shipping
+        </h2>
+
+        <p>
+          <strong className="text-white">Address:</strong>{" "}
+            {cart.shippingAddress.address},{" "}
+            {cart.shippingAddress.city},{" "}
+            {cart.shippingAddress.postalCode},{" "}
+            {cart.shippingAddress.country}
+        </p>
+      </div>
+
+      <div className="text-gray-300">
+       <h2 className="text-2xl font-semibold mb-4 text-white">
+          Payment Method
+        </h2>
+
+        <p>
+          <strong className="text-white">Method:</strong>{" "}
+            {cart.paymentMethod}
+        </p>
+     </div>
+    </div>
 
           <button
             type="button"
-            className="bg-pink-500 text-white py-2 px-4 rounded-full text-lg w-full mt-4"
-            disabled={cart.cartItems === 0}
+            className="bg-pink-500 hover:bg-pink-600 transition text-white py-3 px-6 rounded-full text-lg w-full mt-6"
+            disabled={cart.cartItems.length === 0}
             onClick={placeOrderHandler}
           >
             Place Order

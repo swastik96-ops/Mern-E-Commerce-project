@@ -42,12 +42,12 @@ const Shipping = () => {
       <ProgressSteps step1 step2 />
       <div className="mt-[10rem] flex justify-around items-center flex-wrap">
         <form onSubmit={submitHandler} className="w-[40rem]">
-          <h1 className="text-2xl font-semibold mb-4">Shipping</h1>
+          <h1 className="text-2xl font-semibold mb-4 text-white">Shipping</h1>
           <div className="mb-4">
             <label className="block text-white mb-2">Address</label>
             <input
               type="text"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-white"
               placeholder="Enter address"
               value={address}
               required
@@ -58,7 +58,7 @@ const Shipping = () => {
             <label className="block text-white mb-2">City</label>
             <input
               type="text"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-white"
               placeholder="Enter city"
               value={city}
               required
@@ -69,7 +69,7 @@ const Shipping = () => {
             <label className="block text-white mb-2">Postal Code</label>
             <input
               type="text"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-white"
               placeholder="Enter postal code"
               value={postalCode}
               required
@@ -80,7 +80,7 @@ const Shipping = () => {
             <label className="block text-white mb-2">Country</label>
             <input
               type="text"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-white"
               placeholder="Enter country"
               value={country}
               required
@@ -90,7 +90,7 @@ const Shipping = () => {
           <div className="mb-4">
             <label className="block text-gray-400">Select Method</label>
             <div className="mt-2">
-              <label className="inline-flex items-center">
+              <label className="inline-flex items-center text-white">
                 <input
                   type="radio"
                   className="form-radio text-pink-500"

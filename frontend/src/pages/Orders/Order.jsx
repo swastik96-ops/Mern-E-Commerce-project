@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { useSelector } from "react-redux";
@@ -8,7 +8,6 @@ import Loader from "../../components/Loader";
 import {
   useDeliverOrderMutation,
   useGetOrderDetailsQuery,
-  useGetPaypalClientIdQuery,
   usePayOrderMutation,
 } from "../../redux/api/orderApiSlice";
 
@@ -27,34 +26,25 @@ const Order = () => {
     useDeliverOrderMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
-  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const {
-    data: paypal,
-    isLoading: loadingPaPal,
-    error: errorPayPal,
-  } = useGetPaypalClientIdQuery();
-
-  useEffect(() => {
-    if (!errorPayPal && !loadingPaPal && paypal.clientId) {
-      const loadingPaPalScript = async () => {
-        paypalDispatch({
-          type: "resetOptions",
-          value: {
-            "client-id": paypal.clientId,
-            currency: "USD",
-          },
-        });
-        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
-      };
-
-      if (order && !order.isPaid) {
-        if (!window.paypal) {
-          loadingPaPalScript();
-        }
-      }
-    }
-  }, [errorPayPal, loadingPaPal, order, paypal, paypalDispatch]);
+const handlePayPalClick = async () => {
+  try {
+    await payOrder({
+      orderId,
+      details: {
+        id: "MOCK",
+        status: "COMPLETED",
+        update_time: new Date().toISOString(),
+        payer: { email_address: order.user.email },
+      },
+    }).unwrap();
+    await refetch();
+    setShowSuccess(true);
+  } catch (error) {
+    toast.error(error?.data?.message || error.message);
+  }
+};
 
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
@@ -92,15 +82,26 @@ const Order = () => {
   ) : error ? (
     <Messsage variant="danger">{error.data.message}</Messsage>
   ) : (
-    <div className="container flex flex-col ml-[10rem] md:flex-row">
+    <>
+    <div className="ml-20 px-8 pt-8">
+      <h1 className="text-4xl font-bold text-white">
+        Order Details
+      </h1>
+
+      <p className="text-gray-400 mt-2">
+        Review your purchase and payment information.
+      </p>
+    </div>
+
+    <div className="flex flex-col lg:flex-row gap-10 ml-20 px-8 pb-10 text-white">
       <div className="md:w-2/3 pr-4">
-        <div className="border gray-300 mt-5 pb-4 mb-5">
+        <div className="mt-6 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-xl">
           {order.orderItems.length === 0 ? (
             <Messsage>Order is empty</Messsage>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-[80%]">
-                <thead className="border-b-2">
+                <thead className="border-b border-white/20 text-lg">
                   <tr>
                     <th className="p-2">Image</th>
                     <th className="p-2">Product</th>
@@ -112,17 +113,23 @@ const Order = () => {
 
                 <tbody>
                   {order.orderItems.map((item, index) => (
-                    <tr key={index}>
+                    <tr key={index}
+                      className="hover:bg-white/5 transition duration-300">
                       <td className="p-2">
                         <img
-                          src={item.image}
+                          src={`http://localhost:5000${item.image}`}
                           alt={item.name}
-                          className="w-16 h-16 object-cover"
+                          className="w-24 h-24 rounded-xl object-cover"
                         />
                       </td>
 
                       <td className="p-2">
-                        <Link to={`/product/${item.product}`}>{item.name}</Link>
+                        <Link
+                          to={`/product/${item.product}`}
+                          className="text-lg font-semibold hover:text-pink-400 transition"
+                        >
+                          {item.name}
+                        </Link>
                       </td>
 
                       <td className="p-2 text-center">{item.qty}</td>
@@ -138,7 +145,6 @@ const Order = () => {
           )}
         </div>
       </div>
-
       <div className="md:w-1/3">
         <div className="mt-5 border-gray-300 pb-4 mb-4">
           <h2 className="text-xl font-bold mb-2">Shipping</h2>
@@ -169,11 +175,16 @@ const Order = () => {
           {order.isPaid ? (
             <Messsage variant="success">Paid on {order.paidAt}</Messsage>
           ) : (
-            <Messsage variant="danger">Not paid</Messsage>
+            <div className="inline-block mt-4 px-4 py-2 rounded-full bg-red-500/20 text-red-400 font-semibold">
+              Not Paid
+            </div>
           )}
         </div>
 
-        <h2 className="text-xl font-bold mb-2 mt-[3rem]">Order Summary</h2>
+        <div className="mt-8 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-xl">
+        <h2 className="text-2xl font-bold mb-6">
+          Order Summary
+        </h2>
         <div className="flex justify-between mb-2">
           <span>Items</span>
           <span>$ {order.itemsPrice}</span>
@@ -186,29 +197,22 @@ const Order = () => {
           <span>Tax</span>
           <span>$ {order.taxPrice}</span>
         </div>
-        <div className="flex justify-between mb-2">
+        <div className="flex justify-between mt-4 pt-4 border-t border-white/10 text-2xl font-bold">
           <span>Total</span>
           <span>$ {order.totalPrice}</span>
         </div>
 
         {!order.isPaid && (
           <div>
-            {loadingPay && <Loader />}{" "}
-            {isPending ? (
-              <Loader />
-            ) : (
-              <div>
-                <div>
-                  <PayPalButtons
-                    createOrder={createOrder}
-                    onApprove={onApprove}
-                    onError={onError}
-                  ></PayPalButtons>
-                </div>
-              </div>
-            )}
+            {loadingPay && <Loader />}
+            <button
+              onClick={handlePayPalClick}
+              className="bg-yellow-400 text-blue-900 font-bold w-full py-2 rounded mt-2"
+            >
+              PayPal
+            </button>
           </div>
-        )}
+        )} 
 
         {loadingDeliver && <Loader />}
         {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
@@ -223,7 +227,9 @@ const Order = () => {
           </div>
         )}
       </div>
+      </div>
     </div>
+    </>
   );
 };
 

@@ -4,7 +4,6 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Header from "../components/Header";
 import Product from "../pages/Products/Product";
-import ProductCarousel from "../pages/Products/ProductCarousel";
 
 const Home = () => {
   const { keyword } = useParams();
@@ -13,35 +12,59 @@ const Home = () => {
   return (
     <>
       {!keyword ? <Header /> : null}
+
       {isLoading ? (
         <Loader />
       ) : isError ? (
-         <Message variant="danger">
+        <div className="ml-20 px-8 pt-8">
+          <Message variant="danger">
             {error?.data?.message || error?.message || "Something went wrong"}
-         </Message>
+          </Message>
+        </div>
       ) : (
         <>
-          <div className="flex justify-between items-center text-white">
-            <h1 className="ml-[20rem] mt-[10rem] text-[3rem]">
-              Special Products
-            </h1>
+          {/* Section header */}
+          <div className="ml-20 px-8 pt-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <div>
+              <span className="inline-block text-xs font-semibold tracking-[0.2em] text-pink-400 uppercase mb-3">
+                {keyword ? "Search Results" : "Curated Picks"}
+              </span>
+              <h1 className="text-4xl md:text-5xl font-bold text-white">
+                {keyword ? `Results for "${keyword}"` : "Special Products"}
+              </h1>
+              <p className="text-gray-400 mt-3 max-w-md">
+                {keyword
+                  ? `${data.products.length} item${data.products.length !== 1 ? "s" : ""} matched your search.`
+                  : "Handpicked gear, freshly stocked and ready to ship."}
+              </p>
+            </div>
 
-            <Link
-              to="/shop"
-              className="bg-pink-600 font-bold rounded-full py-2 px-10 mr-[18rem] mt-[10rem]"
-            >
-              Shop
-            </Link>
+            {!keyword && (
+              <Link
+                to="/shop"
+                className="self-start md:self-auto bg-pink-600 hover:bg-pink-700 transition font-bold rounded-full py-3 px-10 text-white shadow-lg shadow-pink-600/20 whitespace-nowrap"
+              >
+                Shop All
+              </Link>
+            )}
           </div>
 
-          <div>
-            <div className="flex justify-center flex-wrap mt-[2rem] text-white">
-              {data.products.map((product) => (
-                <div key={product._id}>
-                  <Product product={product} />
-                </div>
-              ))}
-            </div>
+          {/* Product grid */}
+          <div className="px-8 md:pl-20 pt-10 pb-16">
+            {data.products.length === 0 ? (
+              <div className="mt-10 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-10 text-center text-gray-300 max-w-lg">
+                <p className="text-lg font-semibold text-white mb-1">No products found</p>
+                <p className="text-sm text-gray-400">
+                  Try a different search term, or browse the full shop.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 text-white">
+                {data.products.map((product) => (
+                  <Product key={product._id} product={product} />
+                ))}
+              </div>
+            )}
           </div>
         </>
       )}
