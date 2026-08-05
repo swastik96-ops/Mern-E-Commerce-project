@@ -1,1 +1,810 @@
 @import "tailwindcss";
+:root {
+  --custom-gr: #5F8D6B;
+  --custom-br: #A67C52;
+  --custom-cr: #FFF7F3;
+}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+/* ============================================================
+   STARBUCKS ECO DESIGN SYSTEM
+   Premium · Organic · Minimal · Green
+   ============================================================ */
+
+:root {
+  /* Color tokens */
+  --color-bg:          #F7F5F0;
+  --color-surface:     #FFFFFF;
+  --color-primary:     #2E5E4E;
+  --color-primary-dark:#224840;
+  --color-secondary:   #5F8D6B;
+  --color-accent:      #A67C52;
+  --color-dark:        #2B2B2B;
+  --color-text:        #707070;
+  --color-border:      #E7E2D8;
+  --color-hover-bg:    #EDF5EF;
+  --color-success:     #4D8B5B;
+  --color-danger:      #C0392B;
+  --color-warning:     #E67E22;
+
+  /* Shadows */
+  --shadow-card:       0 2px 16px 0 rgba(46,94,78,0.07), 0 1px 4px 0 rgba(46,94,78,0.04);
+  --shadow-nav:        2px 0 24px 0 rgba(46,94,78,0.08);
+  --shadow-dropdown:   0 8px 32px 0 rgba(43,43,43,0.12);
+  --shadow-btn:        0 2px 8px 0 rgba(46,94,78,0.18);
+
+  /* Radii */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition: all 0.3s ease;
+}
+
+/* ============================================================
+   BASE RESET
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Subtle radial gradients on body */
+body::before {
+  content: '';
+  position: fixed;
+  top: -10%;
+  left: -5%;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(ellipse at center, rgba(95,141,107,0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -10%;
+  right: -5%;
+  width: 55vw;
+  height: 55vh;
+  background: radial-gradient(ellipse at center, rgba(166,124,82,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--color-dark);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+p {
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+/* Primary button */
+button,
+.btn {
+  transition: var(--transition);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+
+/* Override pink/dark buttons with green eco palette */
+.bg-pink-500,
+.bg-pink-600,
+.bg-pink-700,
+[class*="bg-pink-"] {
+  background-color: var(--color-primary) !important;
+}
+
+.hover\:bg-pink-600:hover,
+.hover\:bg-pink-700:hover,
+.hover\:bg-pink-800:hover,
+[class*="hover:bg-pink-"]:hover {
+  background-color: var(--color-primary-dark) !important;
+}
+
+.text-pink-500,
+.text-pink-400,
+.text-pink-600,
+[class*="text-pink-"] {
+  color: var(--color-primary) !important;
+}
+
+.hover\:text-pink-400:hover,
+.hover\:text-pink-300:hover {
+  color: var(--color-secondary) !important;
+}
+
+.border-pink-500,
+.focus\:ring-pink-500,
+[class*="border-pink-"] {
+  border-color: var(--color-primary) !important;
+}
+
+/* Green accent for success / prices */
+.text-green-400,
+.text-green-500 {
+  color: var(--color-success) !important;
+}
+
+.bg-green-400,
+.bg-green-500 {
+  background-color: var(--color-success) !important;
+}
+
+/* Dark backgrounds → surface */
+.bg-\[\#1A1A1A\],
+.bg-\[\#101011\],
+.bg-\[\#111827\],
+.bg-\[\#151515\] {
+  background-color: var(--color-surface) !important;
+  color: var(--color-dark) !important;
+}
+
+/* Tailwind dark bg classes used in dropdowns */
+.bg-\[\#111\] {
+  background-color: var(--color-surface) !important;
+}
+
+/* bg-black → primary dark */
+.bg-black {
+  background-color: var(--color-primary) !important;
+}
+
+/* text-white on top of light surfaces */
+.text-white {
+  color: var(--color-dark);
+}
+
+/* Keep actual white text when inside green nav / dark elements */
+.eco-nav .text-white,
+.eco-btn-primary,
+.eco-badge,
+.eco-nav-link .nav-icon,
+.bg-\[\#2E5E4E\] .text-white,
+.eco-dropdown .text-white {
+  color: #FFFFFF !important;
+}
+
+/* text-gray colors */
+.text-gray-300,
+.text-gray-400 {
+  color: var(--color-text) !important;
+}
+
+.text-\[\#B0B0B0\],
+.text-\[\#CFCFCF\] {
+  color: var(--color-text) !important;
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.card,
+.bg-\[#1A1A1A\],
+.rounded-lg,
+.rounded-2xl,
+.rounded-3xl {
+  /* Will be controlled by component-level classes */
+}
+
+/* Generic card overrides for product cards */
+.max-w-sm.relative.bg-\[\#1A1A1A\] {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+.max-w-sm.relative.bg-\[\#1A1A1A\]:hover {
+  box-shadow: 0 8px 32px 0 rgba(46,94,78,0.13) !important;
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   INPUTS & FORMS
+   ============================================================ */
+
+input,
+textarea,
+select {
+  background-color: var(--color-surface) !important;
+  border: 1.5px solid var(--color-border) !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--color-dark) !important;
+  font-family: 'Inter', sans-serif;
+  transition: var(--transition);
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #B0ADA6 !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(46,94,78,0.12) !important;
+}
+
+/* ============================================================
+   NAVIGATION SIDEBAR
+   ============================================================ */
+
+#navigation-container {
+  background-color: var(--color-primary) !important;
+  border-right: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: var(--shadow-nav) !important;
+}
+
+/* Nav links */
+#navigation-container a,
+#navigation-container button {
+  color: rgba(255,255,255,0.82) !important;
+  border-radius: var(--radius-md) !important;
+  transition: var(--transition);
+}
+
+#navigation-container a:hover,
+#navigation-container button:hover {
+  background-color: rgba(255,255,255,0.10) !important;
+  color: #FFFFFF !important;
+}
+
+/* Cart badge override */
+#navigation-container .bg-pink-500 {
+  background-color: var(--color-accent) !important;
+}
+
+/* Logo brand text */
+#navigation-container .text-pink-500 {
+  color: rgba(255,255,255,0.9) !important;
+}
+
+/* Account avatar */
+#navigation-container .bg-gradient-to-br {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-accent)) !important;
+}
+
+/* Dropdown in nav */
+#navigation-container ul.absolute {
+  background-color: #FFFFFF !important;
+  border: 1px solid var(--color-border) !important;
+  box-shadow: var(--shadow-dropdown) !important;
+  border-radius: var(--radius-md) !important;
+}
+
+#navigation-container ul.absolute a,
+#navigation-container ul.absolute button {
+  color: var(--color-dark) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+#navigation-container ul.absolute a:hover,
+#navigation-container ul.absolute button:hover {
+  background-color: var(--color-hover-bg) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Nav separator */
+#navigation-container .border-t {
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================================
+   MAIN CONTENT AREA
+   ============================================================ */
+
+/* Override dark gradient main bg */
+main,
+.relative.w-full.min-h-screen,
+.bg-gradient-to-br {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Glow blobs → hide old pink/purple ones */
+.bg-pink-500\/20,
+.bg-purple-500\/20 {
+  display: none !important;
+}
+
+/* ============================================================
+   CAROUSEL / SLIDER
+   ============================================================ */
+
+/* Slick carousel inside light background */
+.slick-dots li button:before {
+  color: var(--color-primary) !important;
+  opacity: 0.35;
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 1;
+  color: var(--color-primary) !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: var(--color-primary) !important;
+}
+
+/* Product Carousel card */
+.bg-\[\#111827\].rounded-3xl {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+
+/* ============================================================
+   ADMIN MENU
+   ============================================================ */
+
+/* AdminMenu floating button */
+.bg-\[\#151515\].p-2.fixed {
+  background-color: var(--color-primary) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-btn) !important;
+}
+
+/* Hamburger lines */
+.bg-gray-200 {
+  background-color: rgba(255,255,255,0.85) !important;
+}
+
+/* Admin menu panel */
+.bg-\[\#151515\].p-4.fixed {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-dropdown) !important;
+}
+
+/* Admin nav links */
+.bg-\[\#151515\].p-4.fixed a {
+  color: var(--color-dark) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.bg-\[\#151515\].p-4.fixed a:hover {
+  background-color: var(--color-hover-bg) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Active admin link (greenyellow → primary green) */
+[style*="color: greenyellow"] {
+  color: var(--color-primary) !important;
+}
+
+/* ============================================================
+   SHOP FILTER SIDEBAR
+   ============================================================ */
+
+.bg-\[\#151515\].p-3 {
+  background-color: var(--color-surface) !important;
+  border-right: 1px solid var(--color-border);
+  border-radius: var(--radius-lg) !important;
+}
+
+/* Filter heading pills */
+.bg-black.rounded-full {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+}
+
+/* Reset button */
+.border.my-4.text-white {
+  background-color: transparent;
+  border: 1.5px solid var(--color-border) !important;
+  color: var(--color-text) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 8px 16px;
+}
+
+.border.my-4.text-white:hover {
+  background-color: var(--color-hover-bg) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Checkbox accent */
+input[type="checkbox"] {
+  accent-color: var(--color-primary) !important;
+}
+
+input[type="radio"] {
+  accent-color: var(--color-primary) !important;
+}
+
+/* ============================================================
+   STAT CARDS (Dashboard)
+   ============================================================ */
+
+.rounded-lg.bg-black.p-5 {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg) !important;
+  color: var(--color-dark) !important;
+}
+
+/* Stat card icon background */
+.rounded-full.bg-pink-500.text-center.p-3 {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+}
+
+/* ============================================================
+   TABLE STYLES
+   ============================================================ */
+
+table {
+  border-collapse: collapse;
+}
+
+thead tr {
+  border-bottom: 2px solid var(--color-border);
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  transition: var(--transition);
+}
+
+tbody tr:hover {
+  background-color: var(--color-hover-bg) !important;
+}
+
+th {
+  color: var(--color-primary) !important;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+td {
+  color: var(--color-dark);
+}
+
+/* UserList table headers (inline pink) */
+.text-\[\#FF3558\] {
+  color: var(--color-primary) !important;
+}
+
+/* Order detail dark card */
+.bg-white\/5,
+.bg-\[\#181818\] {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg) !important;
+}
+
+.border-white\/10 {
+  border-color: var(--color-border) !important;
+}
+
+.border-white\/20 {
+  border-color: var(--color-border) !important;
+}
+
+/* ============================================================
+   PROGRESS STEPS
+   ============================================================ */
+
+.text-green-500 {
+  color: var(--color-primary) !important;
+}
+
+.bg-green-500 {
+  background-color: var(--color-primary) !important;
+}
+
+/* ============================================================
+   PRODUCT DETAILS
+   ============================================================ */
+
+/* Icons on product details */
+.text-cyan-400 {
+  color: var(--color-secondary) !important;
+}
+
+.text-orange-400 {
+  color: var(--color-accent) !important;
+}
+
+.text-yellow-400 {
+  color: var(--color-accent) !important;
+}
+
+/* ============================================================
+   ORDER PAGE
+   ============================================================ */
+
+/* Order "Not Paid" pill */
+.bg-red-500\/20 {
+  background-color: rgba(192,57,43,0.10) !important;
+}
+
+.text-red-400 {
+  color: var(--color-danger) !important;
+}
+
+/* PayPal button */
+.bg-yellow-400 {
+  background-color: #F0A500 !important;
+}
+
+/* Deliver button */
+.bg-pink-500.text-white.w-full {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+  border-radius: var(--radius-md) !important;
+}
+
+/* ============================================================
+   STATUS PILLS
+   ============================================================ */
+
+.bg-green-400.text-black {
+  background-color: rgba(77,139,91,0.15) !important;
+  color: var(--color-success) !important;
+  border: 1px solid rgba(77,139,91,0.3);
+}
+
+.bg-red-400.text-black {
+  background-color: rgba(192,57,43,0.10) !important;
+  color: var(--color-danger) !important;
+  border: 1px solid rgba(192,57,43,0.2);
+}
+
+/* ============================================================
+   SMALL PRODUCT CARD (Homepage sidebar)
+   ============================================================ */
+
+.w-\[280px\].bg-\[\#111827\] {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+  box-shadow: var(--shadow-card);
+}
+
+.w-\[280px\].bg-\[\#111827\]:hover {
+  box-shadow: 0 8px 24px 0 rgba(46,94,78,0.12) !important;
+}
+
+/* Price badge on small product */
+.bg-pink-600.text-white.px-4.py-2.rounded-full {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+}
+
+/* ============================================================
+   PRODUCT CARD (Shop page)
+   ============================================================ */
+
+/* Brand badge */
+.bg-pink-100.text-pink-800 {
+  background-color: rgba(46,94,78,0.1) !important;
+  color: var(--color-primary) !important;
+}
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+
+.border-pink-500 {
+  border-color: var(--color-primary) !important;
+}
+
+/* ============================================================
+   TOASTIFY
+   ============================================================ */
+
+.Toastify__toast--success {
+  background-color: var(--color-surface) !important;
+  color: var(--color-success) !important;
+  border-left: 4px solid var(--color-success);
+}
+
+.Toastify__toast--error {
+  background-color: var(--color-surface) !important;
+  color: var(--color-danger) !important;
+  border-left: 4px solid var(--color-danger);
+}
+
+.Toastify__toast {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-dropdown) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.Toastify__progress-bar--success {
+  background-color: var(--color-success) !important;
+}
+
+.Toastify__progress-bar--error {
+  background-color: var(--color-danger) !important;
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
+.bg-white.p-4.rounded-lg {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-dropdown) !important;
+}
+
+/* ============================================================
+   CATEGORY BUTTONS
+   ============================================================ */
+
+.bg-white.border.border-pink-500 {
+  background-color: var(--color-surface) !important;
+  border: 1.5px solid var(--color-primary) !important;
+  color: var(--color-primary) !important;
+  border-radius: var(--radius-md) !important;
+  transition: var(--transition);
+  font-weight: 500;
+}
+
+.bg-white.border.border-pink-500:hover {
+  background-color: var(--color-primary) !important;
+  color: #FFFFFF !important;
+}
+
+/* ============================================================
+   HEART ICON
+   ============================================================ */
+
+.text-pink-500 svg,
+.text-pink-500 {
+  color: var(--color-accent) !important;
+}
+
+/* ============================================================
+   PRODUCT UPDATE / CREATE — dark inputs
+   ============================================================ */
+
+.bg-\[\#101011\] {
+  background-color: var(--color-surface) !important;
+  color: var(--color-dark) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Upload image label area */
+.border.text-white.px-4.block.w-full.text-center.rounded-lg {
+  background-color: var(--color-hover-bg) !important;
+  border: 2px dashed var(--color-border) !important;
+  color: var(--color-text) !important;
+  border-radius: var(--radius-md) !important;
+  transition: var(--transition);
+}
+
+.border.text-white.px-4.block.w-full.text-center.rounded-lg:hover {
+  border-color: var(--color-primary) !important;
+  background-color: rgba(46,94,78,0.06) !important;
+}
+
+/* ============================================================
+   BACK LINK
+   ============================================================ */
+
+.text-white.font-semibold.hover\:underline {
+  color: var(--color-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* ============================================================
+   PROFILE PAGE
+   ============================================================ */
+
+.text-\[\#FF8DA1\] {
+  color: var(--color-primary) !important;
+}
+
+.form-input {
+  background-color: var(--color-surface) !important;
+  border: 1.5px solid var(--color-border) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--color-dark) !important;
+}
+
+/* ============================================================
+   ALL PRODUCTS LIST
+   ============================================================ */
+
+.text-\[\#FF8DA1\] {
+  color: var(--color-primary) !important;
+}
+
+/* Product list link on allproducts */
+.bg-pink-700.rounded-lg,
+.dark\:bg-pink-600 {
+  background-color: var(--color-primary) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.hover\:bg-pink-800:hover,
+.dark\:hover\:bg-pink-700:hover {
+  background-color: var(--color-primary-dark) !important;
+}
+
+/* ============================================================
+   SECTION HEADINGS ON HOME
+   ============================================================ */
+
+.text-pink-400 {
+  color: var(--color-secondary) !important;
+}
+
+/* ============================================================
+   RESPONSIVE TOUCH-UPS
+   ============================================================ */
+
+@media (max-width: 768px) {
+  body::before,
+  body::after {
+    display: none;
+  }
+}
+
+/* ============================================================
+   UTILITY: Smooth hover on all interactive elements
+   ============================================================ */
+
+a, button, input, select, textarea, label {
+  transition: var(--transition);
+}

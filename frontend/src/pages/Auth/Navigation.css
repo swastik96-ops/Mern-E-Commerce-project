@@ -1,36 +1,105 @@
+/* ==========================================================
+   PREMIUM ECO SIDEBAR
+========================================================== */
+
 #navigation-container {
-  width: 4%;
-  transition: width 0.3s ease-in-out;
-  overflow: hidden; /* Hide overflowing content during transition */
+  width: 90px;
+  transition: all 0.35s ease;
+  overflow: hidden;
+
+  background: #F8F6EF;
+  border-right: 1px solid rgba(166, 124, 82, 0.18);
+  box-shadow: 0 10px 35px rgba(46, 94, 78, 0.08);
 }
 
 #navigation-container:hover {
-  width: 15%;
+  width: 260px;
 }
 
-/* Initially hide nav-item-name */
+/* Navigation labels */
+
 .nav-item-name {
   display: none;
-  transition: opacity 0.2s ease-in-out; /* Add opacity transition */
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity .25s ease;
 }
+
 
 #navigation-container:hover .nav-item-name {
   display: block;
   opacity: 1;
 }
 
+/* Search */
+
 .search-input {
   display: none;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out; /* Add opacity transition */
 }
 
 #navigation-container:hover .search-input {
   display: block;
-  opacity: 1;
 }
 
 #navigation-container:hover .search-icon {
   display: none;
-  transition: opacity 0.2s ease-in-out; /* Add opacity transition */
+}
+
+/* ---------------- Links ---------------- */
+
+#navigation-container a,
+#navigation-container button {
+  color: #2E5E4E;
+  transition: all .25s ease;
+}
+
+#navigation-container svg {
+  color: #F8F6EF;
+  transition: all .3s ease;
+}
+
+#navigation-container a:hover,
+#navigation-container button:hover {
+  background: #EDF5EF;
+}
+
+#navigation-container a:hover *,
+#navigation-container button:hover * {
+  color: #c48457 !important;
+}
+
+/* Dropdown */
+
+#navigation-container ul {
+  background: #FFFFFF;
+  border: 1px solid rgba(166,124,82,.15);
+  box-shadow: 0 15px 35px rgba(0,0,0,.08);
+}
+
+#navigation-container ul a,
+#navigation-container ul button {
+  color: #2E5E4E !important;
+}
+
+#navigation-container ul a:hover,
+#navigation-container ul button:hover {
+  background: #EDF5EF;
+  color: #8B5E3C !important;
+}
+.logo-link:hover{
+    background: transparent !important;
+    transform:none !important;
+    box-shadow:none !important;
+}
+
+.logo-link:hover svg{
+    color:#F8F6EF !important;
+    transform:none !important;
+}
+
+.logo-link:hover .nav-item-name{
+    color:#2E5E4E !important;
+}
+.logo-link:hover *{
+    color: inherit !important;
 }

@@ -39,26 +39,62 @@ const Navigation = () => {
     }
   };
 
-  const navLinkClass =
-    "group/link flex items-center gap-4 px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-colors";
-
+ const navLinkClass = `
+    group flex items-center gap-4
+    px-4 py-3
+    rounded-2xl
+    text-[#2E5E4E]
+    font-medium
+    transition-all duration-300 ease-out
+    hover:bg-[#EDF5EF]
+    hover:text-[#8B5E3C]
+    hover:translate-x-2
+    hover:shadow-md
+    `;
   return (
     <div
       style={{ zIndex: 9999 }}
       className={`${
         showSidebar ? "hidden" : "flex"
-      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between text-white bg-black/95 backdrop-blur-xl border-r border-white/10 w-20 hover:w-64 h-screen fixed top-0 left-0 transition-all duration-300 ease-in-out overflow-hidden group`}
+      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between w-[90px] hover:w-[250px] h-screen fixed top-0 left-0 transition-all duration-300 overflow-hidden`}
       id="navigation-container"
     >
       {/* Logo / Brand */}
       <div>
-        <Link to="/" className="flex items-center gap-3 px-4 py-6">
-          <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shadow-lg shadow-pink-500/30">
-            <BsLightningChargeFill size={18} className="text-white" />
+        <Link
+            to="/"
+            className="logo-link flex items-center gap-3 px-4 py-6"
+        >
+          <div
+            className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center shadow-md"
+            style={{
+              background: "linear-gradient(135deg,#3A5A40,#A67C52)"
+            }}
+          >
+            <BsLightningChargeFill
+              size={20}
+              style={{
+                color: "#F8F6EF",
+              }}
+            />
           </div>
-          <span className="hidden nav-item-name text-xl font-bold tracking-wide whitespace-nowrap">
-            VOLT<span className="text-pink-500">IX</span>
-          </span>
+          <span
+              className="hidden nav-item-name text-[22px] font-extrabold tracking-wide whitespace-nowrap transition-all duration-300"
+              style={{
+                color: "#e3c7b8",
+                letterSpacing: "1px",
+              }}
+            >
+              VOLT
+              <span
+                style={{
+                  color: "#A67C52",
+                  fontWeight: 900,
+                }}
+              >
+                IX
+              </span>
+            </span>
         </Link>
 
         {/* Nav links */}
@@ -81,7 +117,7 @@ const Navigation = () => {
             <div className="relative flex-shrink-0">
               <AiOutlineShoppingCart size={24} />
               {cartItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[16px] h-4 px-1 text-[10px] font-bold text-white bg-pink-500 rounded-full">
+                <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-[16px] h-4 px-1 text-[10px] font-bold rounded-full" style={{ backgroundColor: '#A67C52', color: '#ffffff' }}>
                   {cartItems.reduce((a, c) => a + c.qty, 0)}
                 </span>
               )}
@@ -109,14 +145,14 @@ const Navigation = () => {
       <div className="relative px-3 pb-6">
         <button
           onClick={toggleDropdown}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors focus:outline-none"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-all duration-300 focus:outline-none"
         >
           {userInfo ? (
             <>
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center font-bold text-sm">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm" style={{ background: 'linear-gradient(135deg, #5F8D6B, #A67C52)', color: '#ffffff' }}>
                 {userInfo.username.charAt(0).toUpperCase()}
               </div>
-              <span className="hidden nav-item-name text-white font-medium whitespace-nowrap truncate">
+              <span className="hidden nav-item-name font-medium whitespace-nowrap truncate" style={{ color: '#ffffff' }}>
                 {userInfo.username}
               </span>
               <svg
@@ -142,46 +178,49 @@ const Navigation = () => {
         </button>
 
         {dropdownOpen && userInfo && (
-          <ul className="absolute left-3 right-3 bottom-16 space-y-1 bg-[#111] border border-white/10 rounded-xl overflow-hidden shadow-2xl py-1">
+          <ul className="absolute left-3 right-3 bottom-16 space-y-1 rounded-xl overflow-hidden py-1" style={{ backgroundColor: '#ffffff', border: '1px solid #E7E2D8', boxShadow: '0 8px 32px 0 rgba(43,43,43,0.12)' }}>
             {userInfo.isAdmin && (
               <>
                 <li>
-                  <Link to="/admin/dashboard" className="block px-4 py-2 text-sm hover:bg-white/10 whitespace-nowrap">
+                  <Link to="/admin/dashboard" className="block px-4 py-2 text-sm whitespace-nowrap rounded-md transition-all duration-300" style={{ color: '#2B2B2B' }} onMouseEnter={e => { e.target.style.backgroundColor='#EDF5EF'; e.target.style.color='#2E5E4E'; }} onMouseLeave={e => { e.target.style.backgroundColor=''; e.target.style.color='#2B2B2B'; }}>
                     Dashboard
                   </Link>
                 </li>
                 <li>
-                  <Link to="/admin/productlist" className="block px-4 py-2 text-sm hover:bg-white/10 whitespace-nowrap">
+                  <Link to="/admin/productlist" className="block px-4 py-2 text-sm whitespace-nowrap rounded-md transition-all duration-300" style={{ color: '#2B2B2B' }} onMouseEnter={e => { e.target.style.backgroundColor='#EDF5EF'; e.target.style.color='#2E5E4E'; }} onMouseLeave={e => { e.target.style.backgroundColor=''; e.target.style.color='#2B2B2B'; }}>
                     Products
                   </Link>
                 </li>
                 <li>
-                  <Link to="/admin/categorylist" className="block px-4 py-2 text-sm hover:bg-white/10 whitespace-nowrap">
+                  <Link to="/admin/categorylist" className="block px-4 py-2 text-sm whitespace-nowrap rounded-md transition-all duration-300" style={{ color: '#2B2B2B' }} onMouseEnter={e => { e.target.style.backgroundColor='#EDF5EF'; e.target.style.color='#2E5E4E'; }} onMouseLeave={e => { e.target.style.backgroundColor=''; e.target.style.color='#2B2B2B'; }}>
                     Category
                   </Link>
                 </li>
                 <li>
-                  <Link to="/admin/orderlist" className="block px-4 py-2 text-sm hover:bg-white/10 whitespace-nowrap">
+                  <Link to="/admin/orderlist" className="block px-4 py-2 text-sm whitespace-nowrap rounded-md transition-all duration-300" style={{ color: '#2B2B2B' }} onMouseEnter={e => { e.target.style.backgroundColor='#EDF5EF'; e.target.style.color='#2E5E4E'; }} onMouseLeave={e => { e.target.style.backgroundColor=''; e.target.style.color='#2B2B2B'; }}>
                     Orders
                   </Link>
                 </li>
                 <li>
-                  <Link to="/admin/userlist" className="block px-4 py-2 text-sm hover:bg-white/10 whitespace-nowrap">
+                  <Link to="/admin/userlist" className="block px-4 py-2 text-sm whitespace-nowrap rounded-md transition-all duration-300" style={{ color: '#2B2B2B' }} onMouseEnter={e => { e.target.style.backgroundColor='#EDF5EF'; e.target.style.color='#2E5E4E'; }} onMouseLeave={e => { e.target.style.backgroundColor=''; e.target.style.color='#2B2B2B'; }}>
                     Users
                   </Link>
                 </li>
-                <li className="border-t border-white/10 my-1" />
+                <li className="my-1" style={{ borderTop: '1px solid #E7E2D8' }} />
               </>
             )}
             <li>
-              <Link to="/profile" className="block px-4 py-2 text-sm hover:bg-white/10 whitespace-nowrap">
+              <Link to="/profile" className="block px-4 py-2 text-sm whitespace-nowrap rounded-md transition-all duration-300" style={{ color: '#2B2B2B' }} onMouseEnter={e => { e.target.style.backgroundColor='#EDF5EF'; e.target.style.color='#2E5E4E'; }} onMouseLeave={e => { e.target.style.backgroundColor=''; e.target.style.color='#2B2B2B'; }}>
                 Profile
               </Link>
             </li>
             <li>
               <button
                 onClick={logoutHandler}
-                className="block w-full px-4 py-2 text-sm text-left hover:bg-white/10 whitespace-nowrap"
+                className="block w-full px-4 py-2 text-sm text-left whitespace-nowrap rounded-md transition-all duration-300"
+                style={{ color: '#2B2B2B' }}
+                onMouseEnter={e => { e.target.style.backgroundColor='#EDF5EF'; e.target.style.color='#2E5E4E'; }}
+                onMouseLeave={e => { e.target.style.backgroundColor=''; e.target.style.color='#2B2B2B'; }}
               >
                 Logout
               </button>

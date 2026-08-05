@@ -23,8 +23,9 @@ const Home = () => {
         </div>
       ) : (
         <>
+          
           {/* Section header */}
-          <div className="ml-20 px-8 pt-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div className="ml-20 px-8 pt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
               <span className="inline-block text-xs font-semibold tracking-[0.2em] text-pink-400 uppercase mb-3">
                 {keyword ? "Search Results" : "Curated Picks"}

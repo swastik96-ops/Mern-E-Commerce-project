@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FaTrash } from "react-icons/fa";
 import { addToCart, removeFromCart } from "../redux/features/cart/cartSlice";
+import { useGetProductsQuery } from "../redux/api/productApiSlice";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -9,6 +11,23 @@ const Cart = () => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+
+  // Pull the current product catalog so we can detect cart items
+  // that reference a product which has since been deleted/updated.
+  const { data } = useGetProductsQuery({});
+
+  useEffect(() => {
+    if (!data?.products) return;
+
+    const validIds = new Set(data.products.map((p) => p._id));
+
+    cartItems.forEach((item) => {
+      if (!validIds.has(item._id)) {
+        dispatch(removeFromCart(item._id));
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const addToCartHandler = (product, qty) => {
     dispatch(addToCart({ ...product, qty }));

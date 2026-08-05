@@ -98,73 +98,80 @@ const ProductList = () => {
           </div>
 
           <div className="p-3">
-            <div className="flex flex-wrap">
-              <div className="one">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
                 <label htmlFor="name">Name</label> <br />
                 <input
+                  id="name"
                   type="text"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  className="p-4 mb-3 w-full border rounded-lg bg-[#101011] text-white"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-              <div className="two ml-10 ">
-                <label htmlFor="name block">Price</label> <br />
+              <div>
+                <label htmlFor="price">Price</label> <br />
                 <input
+                  id="price"
                   type="number"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  className="p-4 mb-3 w-full border rounded-lg bg-[#101011] text-white"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
             </div>
-            <div className="flex flex-wrap">
-              <div className="one">
-                <label htmlFor="name block">Quantity</label> <br />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="quantity">Quantity</label> <br />
                 <input
+                  id="quantity"
                   type="number"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  className="p-4 mb-3 w-full border rounded-lg bg-[#101011] text-white"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>
-              <div className="two ml-10 ">
-                <label htmlFor="name block">Brand</label> <br />
+              <div>
+                <label htmlFor="brand">Brand</label> <br />
                 <input
+                  id="brand"
                   type="text"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  className="p-4 mb-3 w-full border rounded-lg bg-[#101011] text-white"
                   value={brand}
                   onChange={(e) => setBrand(e.target.value)}
                 />
               </div>
             </div>
 
-            <label htmlFor="" className="my-5">
+            <label htmlFor="description" className="my-5 block">
               Description
             </label>
             <textarea
-              type="text"
-              className="p-2 mb-3 bg-[#101011] border rounded-lg w-[95%] text-white"
+              id="description"
+              className="p-2 mb-3 bg-[#101011] border rounded-lg w-full text-white"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
 
-            <div className="flex justify-between">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="name block">Count In Stock</label> <br />
+                <label htmlFor="stock">Count In Stock</label> <br />
                 <input
+                  id="stock"
                   type="text"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  className="p-4 mb-3 w-full border rounded-lg bg-[#101011] text-white"
                   value={stock}
                   onChange={(e) => setStock(e.target.value)}
                 />
               </div>
 
               <div>
-                <label htmlFor="">Category</label> <br />
+                <label htmlFor="category">Category</label> <br />
                 <select
+                  id="category"
                   placeholder="Choose Category"
-                  className="p-4 mb-3 w-[30rem] border rounded-lg bg-[#101011] text-white"
+                  className="p-4 mb-3 w-full border rounded-lg bg-[#101011] text-white"
                   onChange={(e) => setCategory(e.target.value)}
                 >
                   {categories?.map((c) => (
