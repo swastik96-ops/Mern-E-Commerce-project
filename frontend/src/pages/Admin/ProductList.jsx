@@ -38,10 +38,13 @@ const ProductList = () => {
       productData.append("brand", brand);
       productData.append("countInStock", stock);
 
-      const { data } = await createProduct(productData);
+      const { data, error } = await createProduct(productData);
 
-      if (data.error) {
-        toast.error("Product create failed. Try Again.");
+      console.log("RESPONSE DATA:", data);
+      console.log("RESPONSE ERROR:", error);
+
+      if (error) {
+        toast.error(error?.data?.message || error?.error || "Product create failed. Try Again.");
       } else {
         toast.success(`${data.name} is created`);
         navigate("/");

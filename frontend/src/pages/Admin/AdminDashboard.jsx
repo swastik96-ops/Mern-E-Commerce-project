@@ -5,27 +5,33 @@ import {
   useGetTotalSalesByDateQuery,
   useGetTotalSalesQuery,
 } from "../../redux/api/orderApiSlice";
+import { FaRupeeSign, FaUsers, FaBoxOpen } from "react-icons/fa";
 
 import { useState, useEffect } from "react";
 import AdminMenu from "./AdminMenu";
 import OrderList from "./OrderList";
 import Loader from "../../components/Loader";
 
-const StatCard = ({ icon, label, value, isLoading, isError }) => (
-  <div className="rounded-lg bg-black p-5 w-[20rem] mt-5">
-    <div className="font-bold rounded-full w-[3rem] bg-pink-500 text-center p-3">
+const StatCard = ({ icon, label, value, isLoading, isError, accent }) => (
+  <div className="flex-1 min-w-[220px] bg-white rounded-2xl border border-[#E7E2D8] shadow-[0_2px_16px_0_rgba(46,94,78,0.07)] p-6">
+    <div
+      className="w-11 h-11 rounded-xl flex items-center justify-center text-lg mb-4"
+      style={{ backgroundColor: accent, color: "#FFFFFF" }}
+    >
       {icon}
     </div>
-    <p className="mt-5">{label}</p>
-    <h1 className="text-xl font-bold">
+    <p className="text-sm text-[#707070] mb-1">{label}</p>
+    <h2 className="font-display text-2xl font-semibold text-[#2B2B2B]">
       {isLoading ? (
         <Loader />
       ) : isError ? (
-        <span className="text-red-400 text-sm">Failed to load</span>
+        <span className="text-[#C0392B] text-sm font-sans font-normal">
+          Failed to load
+        </span>
       ) : (
         value
       )}
-    </h1>
+    </h2>
   </div>
 );
 
@@ -51,26 +57,43 @@ const AdminDashboard = () => {
     options: {
       chart: {
         type: "bar",
+        toolbar: { show: false },
+        fontFamily: "Inter, sans-serif",
       },
-      theme: {             
-      mode: "dark",
+      theme: {
+        mode: "light",
       },
       tooltip: {
-        theme: "dark",
+        theme: "light",
       },
-      colors: ["#00E396"],
+      plotOptions: {
+        bar: {
+          borderRadius: 6,
+          columnWidth: "45%",
+        },
+      },
+      colors: ["#2E5E4E"],
       dataLabels: {
-        enabled: true,
+        enabled: false,
       },
       stroke: {
         curve: "smooth",
+        width: 2,
+        colors: ["transparent"],
       },
       title: {
         text: "Sales Trend",
         align: "left",
+        style: {
+          fontFamily: "Fraunces, serif",
+          fontSize: "20px",
+          fontWeight: 600,
+          color: "#2B2B2B",
+        },
       },
       grid: {
-        borderColor: "#ccc",
+        borderColor: "#E7E2D8",
+        strokeDashArray: 4,
       },
       markers: {
         size: 1,
@@ -80,19 +103,22 @@ const AdminDashboard = () => {
         title: {
           text: "Date",
         },
+        labels: {
+          style: { colors: "#707070" },
+        },
+        axisBorder: { color: "#E7E2D8" },
       },
       yaxis: {
         title: {
           text: "Sales",
         },
         min: 0,
+        labels: {
+          style: { colors: "#707070" },
+        },
       },
       legend: {
-        position: "top",
-        horizontalAlign: "right",
-        floating: true,
-        offsetY: -25,
-        offsetX: -5,
+        show: false,
       },
     },
     series: [{ name: "Sales", data: [] }],
@@ -127,45 +153,60 @@ const AdminDashboard = () => {
     <>
       <AdminMenu />
 
-      <section className="xl:ml-[4rem] md:ml-[0rem] text-white">
-        <div className="w-[80%] flex justify-around flex-wrap">
+      <section className="xl:ml-[6rem] md:ml-[2rem] px-6 pt-8 pb-16">
+        <span className="inline-block text-xs font-semibold tracking-[0.2em] text-[#5F8D6B] uppercase mb-2">
+          Admin
+        </span>
+        <h1 className="font-display text-3xl font-semibold text-[#2B2B2B] mb-8">
+          Dashboard
+        </h1>
+
+        <div className="flex flex-wrap gap-5">
           <StatCard
-            icon="$"
-            label="Sales"
-            value={`$ ${sales?.totalSales?.toFixed(2) ?? "0.00"}`}
+            icon={<FaRupeeSign />}
+            label="Total Sales"
+            value={`₹ ${sales?.totalSales?.toFixed(2) ?? "0.00"}`}
             isLoading={salesLoading}
             isError={salesError}
+            accent="#2E5E4E"
           />
           <StatCard
-            icon="👤"
+            icon={<FaUsers />}
             label="Customers"
             value={customers?.length ?? 0}
             isLoading={customersLoading}
             isError={customersError}
+            accent="#5F8D6B"
           />
           <StatCard
-            icon="📦"
+            icon={<FaBoxOpen />}
             label="All Orders"
             value={orders?.totalOrders ?? 0}
             isLoading={ordersLoading}
             isError={ordersError}
+            accent="#A67C52"
           />
         </div>
 
-        <div className="ml-[10rem] mt-[4rem]">
+        <div className="mt-10 bg-white rounded-2xl border border-[#E7E2D8] shadow-[0_2px_16px_0_rgba(46,94,78,0.07)] p-6">
           {hasChartData ? (
             <Chart
               options={state.options}
               series={state.series}
               type="bar"
-              width="70%"
+              height={340}
             />
           ) : (
-            <p className="text-gray-400">No sales data to display yet.</p>
+            <p className="text-[#707070] py-10 text-center">
+              No sales data to display yet.
+            </p>
           )}
         </div>
 
-        <div className="mt-[4rem]">
+        <div className="mt-10">
+          <h2 className="font-display text-2xl font-semibold text-[#2B2B2B] mb-4">
+            Recent Orders
+          </h2>
           <OrderList />
         </div>
       </section>

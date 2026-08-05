@@ -62,39 +62,40 @@ const Navigation = () => {
       {/* Logo / Brand */}
       <div>
         <Link
-            to="/"
-            className="logo-link flex items-center gap-3 px-4 py-6"
+          to="/"
+          className="logo-link flex items-center gap-3 px-4 py-6"
         >
           <div
-            className="flex-shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center shadow-md"
+            className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center"
             style={{
-              background: "linear-gradient(135deg,#3A5A40,#A67C52)"
+              backgroundColor: "#EDE7D9",
+              border: "1.5px solid #A67C52",
             }}
           >
-            <BsLightningChargeFill
-              size={20}
-              style={{
-                color: "#F8F6EF",
-              }}
-            />
+            <span
+              className="font-serif text-[13px] tracking-tight"
+              style={{ color: "#2E5E4E", fontWeight: 700 }}
+            >
+              KM
+            </span>
           </div>
           <span
-              className="hidden nav-item-name text-[22px] font-extrabold tracking-wide whitespace-nowrap transition-all duration-300"
-              style={{
-                color: "#e3c7b8",
-                letterSpacing: "1px",
-              }}
+            className="hidden nav-item-name whitespace-nowrap transition-all duration-300"
+            style={{ lineHeight: 1.1 }}
+          >
+            <span
+              className="block font-serif text-[19px] tracking-[0.04em]"
+              style={{ color: "#EDE7D9", fontWeight: 600 }}
             >
-              VOLT
-              <span
-                style={{
-                  color: "#A67C52",
-                  fontWeight: 900,
-                }}
-              >
-                IX
-              </span>
+              Kingsman
             </span>
+            <span
+              className="block text-[10px] uppercase tracking-[0.25em]"
+              style={{ color: "#A67C52" }}
+            >
+              Est. Tailoring
+            </span>
+          </span>
         </Link>
 
         {/* Nav links */}

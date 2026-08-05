@@ -1,10 +1,22 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&display=swap");
+
 :root {
   --custom-gr: #5F8D6B;
   --custom-br: #A67C52;
   --custom-cr: #FFF7F3;
 }
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+/* ============================================================
+   FONT TOKENS (Tailwind v4 — replaces tailwind.config.js theme)
+   Registering these makes `font-display` and `font-sans`
+   available as Tailwind utility classes anywhere in your JSX.
+   ============================================================ */
+
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Fraunces', 'Inter', serif;
+}
 
 /* ============================================================
    STARBUCKS ECO DESIGN SYSTEM
@@ -56,7 +68,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--color-bg);
   color: var(--color-dark);
   line-height: 1.6;
@@ -100,9 +112,10 @@ body::after {
    ============================================================ */
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
   color: var(--color-dark);
-  line-height: 1.25;
+  line-height: 1.15;
   letter-spacing: -0.01em;
 }
 
@@ -129,7 +142,7 @@ button,
 .btn {
   transition: var(--transition);
   cursor: pointer;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
 }
 
@@ -260,7 +273,7 @@ select {
   border: 1.5px solid var(--color-border) !important;
   border-radius: var(--radius-md) !important;
   color: var(--color-dark) !important;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   transition: var(--transition);
   outline: none;
 }
@@ -634,8 +647,8 @@ td {
 
 /* Brand badge */
 .bg-pink-100.text-pink-800 {
-  background-color: rgba(46,94,78,0.1) !important;
-  color: var(--color-primary) !important;
+  background-color: rgba(95,141,107,0.12) !important;
+  color: var(--color-secondary) !important;
 }
 
 /* ============================================================
@@ -665,7 +678,7 @@ td {
 .Toastify__toast {
   border-radius: var(--radius-md) !important;
   box-shadow: var(--shadow-dropdown) !important;
-  font-family: 'Inter', sans-serif !important;
+  font-family: var(--font-sans) !important;
 }
 
 .Toastify__progress-bar--success {
@@ -765,10 +778,6 @@ td {
 /* ============================================================
    ALL PRODUCTS LIST
    ============================================================ */
-
-.text-\[\#FF8DA1\] {
-  color: var(--color-primary) !important;
-}
 
 /* Product list link on allproducts */
 .bg-pink-700.rounded-lg,

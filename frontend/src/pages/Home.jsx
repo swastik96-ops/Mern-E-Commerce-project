@@ -9,6 +9,29 @@ const Home = () => {
   const { keyword } = useParams();
   const { data, isLoading, isError, error } = useGetProductsQuery({ keyword });
 
+  // Only apply the one-per-category limit on the curated homepage view,
+  // not on search results — a search should still show every match.
+  const getDisplayProducts = () => {
+    if (!data?.products) return [];
+    if (keyword) return data.products;
+
+    const seenCategories = new Set();
+    const oneProductPerCategory = [];
+
+    for (const product of data.products) {
+      const categoryId = product.category?._id || product.category;
+
+      if (!seenCategories.has(categoryId)) {
+        seenCategories.add(categoryId);
+        oneProductPerCategory.push(product);
+      }
+    }
+
+    return oneProductPerCategory;
+  };
+
+  const displayProducts = getDisplayProducts();
+
   return (
     <>
       {!keyword ? <Header /> : null}
@@ -23,7 +46,7 @@ const Home = () => {
         </div>
       ) : (
         <>
-          
+
           {/* Section header */}
           <div className="ml-20 px-8 pt-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
@@ -36,7 +59,7 @@ const Home = () => {
               <p className="text-gray-400 mt-3 max-w-md">
                 {keyword
                   ? `${data.products.length} item${data.products.length !== 1 ? "s" : ""} matched your search.`
-                  : "Handpicked gear, freshly stocked and ready to ship."}
+                  : "One handpicked favorite from every category."}
               </p>
             </div>
 
@@ -52,7 +75,7 @@ const Home = () => {
 
           {/* Product grid */}
           <div className="px-8 md:pl-20 pt-10 pb-16">
-            {data.products.length === 0 ? (
+            {displayProducts.length === 0 ? (
               <div className="mt-10 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-10 text-center text-gray-300 max-w-lg">
                 <p className="text-lg font-semibold text-white mb-1">No products found</p>
                 <p className="text-sm text-gray-400">
@@ -61,7 +84,7 @@ const Home = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 text-white">
-                {data.products.map((product) => (
+                {displayProducts.map((product) => (
                   <Product key={product._id} product={product} />
                 ))}
               </div>

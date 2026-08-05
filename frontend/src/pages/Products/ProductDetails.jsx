@@ -8,13 +8,7 @@ import {
 } from "../../redux/api/productApiSlice";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
-import {
-  FaBox,
-  FaClock,
-  FaShoppingCart,
-  FaStar,
-  FaStore,
-} from "react-icons/fa";
+import { FaChevronLeft } from "react-icons/fa";
 import moment from "moment";
 import HeartIcon from "./HeartIcon";
 import Ratings from "./Ratings";
@@ -44,13 +38,8 @@ const ProductDetails = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
     try {
-      await createReview({
-        productId,
-        rating,
-        comment,
-      }).unwrap();
+      await createReview({ productId, rating, comment }).unwrap();
       refetch();
       toast.success("Review created successfully");
     } catch (error) {
@@ -64,123 +53,137 @@ const ProductDetails = () => {
   };
 
   return (
-    <>
-      <div>
+    <div className="min-h-screen bg-[#F4F1EA]">
+      <div className="max-w-6xl mx-auto px-6 pt-8">
         <Link
           to="/"
-          className="text-white font-semibold hover:underline ml-[10rem]"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#2D4A3E] hover:opacity-70 transition-opacity"
         >
-          Go Back
+          <FaChevronLeft size={12} />
+          Back to shop
         </Link>
       </div>
 
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">
-          {error?.data?.message || error.message}
-        </Message>
+        <div className="max-w-6xl mx-auto px-6 pt-8">
+          <Message variant="danger">
+            {error?.data?.message || error.message}
+          </Message>
+        </div>
       ) : (
-        <>
-          <div className="flex flex-wrap items-start gap-12 mt-[2rem] ml-[10rem]">
-              <img
-                src={`http://localhost:5000${product.image}`}
-                alt={product.name}
-                className="w-full rounded-lg object-cover h-[30rem]"
-              />
-            <div className="absolute top-4 right-4">
-              <HeartIcon product={product} />
+        <div className="max-w-6xl mx-auto px-6 pt-8 pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-12 lg:gap-16">
+            {/* Image column */}
+            <div className="relative">
+              <div className="sticky top-8">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-[#E4DED0]">
+                  <img
+                    src={`http://localhost:5000${product.image}`}
+                    alt={product.name}
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <HeartIcon product={product} />
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="flex flex-col justify-between text-white">
-              <h2 className="text-2xl font-semibold">{product.name}</h2>
-              <p className="my-4 xl:w-[35rem] lg:w-[35rem] md:w-[30rem] text-[#B0B0B0]">
+            {/* Details column */}
+            <div className="flex flex-col">
+              <p className="text-xs tracking-[0.2em] uppercase text-[#8A8378] mb-3">
+                {product.brand}
+              </p>
+
+              <h1 className="font-serif text-4xl leading-tight text-[#1F2A24] mb-4">
+                {product.name}
+              </h1>
+
+              <p className="text-2xl font-semibold text-[#2D4A3E] mb-6">
+                ₹{product.price}
+              </p>
+
+              <p className="text-[#5F5A54] leading-relaxed mb-8 max-w-xl">
                 {product.description}
               </p>
 
-              <p className="text-5xl my-4 font-extrabold text-white">$ {product.price}</p>
-
-              <div className="flex items-center justify-between w-[20rem]">
-                <div className="one">
-                  <h1 className="flex items-center mb-6">
-                    <FaStore className="mr-2 text-white" /> Brand:{" "}
-                    {product.brand}
-                  </h1>
-                  <h1 className="flex items-center mb-6 w-[20rem]">
-                    <FaClock className="mr-2 text-white" /> Added:{" "}
+              <div className="grid grid-cols-3 gap-6 py-6 border-y border-[#DDD6C7] mb-8">
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-[#8A8378] mb-1">
+                    Added
+                  </p>
+                  <p className="text-sm text-[#1F2A24]">
                     {moment(product.createAt).fromNow()}
-                  </h1>
-                  <h1 className="flex items-center mb-6">
-                    <FaStar className="mr-2 text-white" /> Reviews:{" "}
-                    {product.numReviews}
-                  </h1>
+                  </p>
                 </div>
-
-                <div className="two">
-                  <h1 className="flex items-center mb-6">
-                    <FaStar className="mr-2 text-white" /> Ratings: {rating}
-                  </h1>
-                  <h1 className="flex items-center mb-6">
-                    <FaShoppingCart className="mr-2 text-white" /> Quantity:{" "}
-                    {product.quantity}
-                  </h1>
-                  <h1 className="flex items-center mb-6 w-[10rem]">
-                    <FaBox className="mr-2 text-white" /> In Stock:{" "}
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-[#8A8378] mb-1">
+                    In stock
+                  </p>
+                  <p className="text-sm text-[#1F2A24]">
                     {product.countInStock}
-                  </h1>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wide text-[#8A8378] mb-1">
+                    Reviews
+                  </p>
+                  <p className="text-sm text-[#1F2A24]">
+                    {product.numReviews}
+                  </p>
                 </div>
               </div>
 
-              <div className="flex justify-between flex-wrap">
+              <div className="mb-8">
                 <Ratings
                   value={product.rating}
                   text={`${product.numReviews} reviews`}
                 />
-
-                {product.countInStock > 0 && (
-                  <div>
-                    <select
-                      value={qty}
-                      onChange={(e) => setQty(e.target.value)}
-                      className="p-2 w-[6rem] rounded-lg text-black"
-                    >
-                      {[...Array(product.countInStock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
               </div>
 
-              <div className="btn-container">
+              <div className="flex items-center gap-4 mb-2">
+                {product.countInStock > 0 && (
+                  <select
+                    value={qty}
+                    onChange={(e) => setQty(e.target.value)}
+                    className="p-3 w-24 rounded-sm border border-[#DDD6C7] bg-white text-[#1F2A24] focus:outline-none focus:border-[#2D4A3E]"
+                  >
+                    {[...Array(product.countInStock).keys()].map((x) => (
+                      <option key={x + 1} value={x + 1}>
+                        {x + 1}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
                 <button
                   onClick={addToCartHandler}
                   disabled={product.countInStock === 0}
-                  className="bg-pink-600 text-white py-2 px-4 rounded-lg mt-4 md:mt-0"
+                  className="flex-1 bg-[#2D4A3E] text-white py-3 px-8 rounded-sm font-medium tracking-wide hover:bg-[#233B31] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  Add To Cart
+                  {product.countInStock === 0 ? "Out of stock" : "Add to cart"}
                 </button>
               </div>
             </div>
-
-            <div className="mt-[5rem] container flex flex-wrap items-start justify-between ml-[10rem]">
-              <ProductTabs
-                loadingProductReview={loadingProductReview}
-                userInfo={userInfo}
-                submitHandler={submitHandler}
-                rating={rating}
-                setRating={setRating}
-                comment={comment}
-                setComment={setComment}
-                product={product}
-              />
-            </div>
           </div>
-        </>
+
+          <div className="mt-16 pt-12 border-t border-[#DDD6C7]">
+            <ProductTabs
+              loadingProductReview={loadingProductReview}
+              userInfo={userInfo}
+              submitHandler={submitHandler}
+              rating={rating}
+              setRating={setRating}
+              comment={comment}
+              setComment={setComment}
+              product={product}
+            />
+          </div>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 
