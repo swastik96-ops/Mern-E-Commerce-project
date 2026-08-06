@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Loader from "../../components/Loader";
 import { useLoginMutation } from "../../redux/api/usersApiSlice";
 import { setCredentials } from "../../redux/features/auth/authSlice";
@@ -9,6 +10,7 @@ import { toast } from "react-toastify";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,86 +31,117 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      toast.error("Please enter both email and password");
+      return;
+    }
+
     try {
       const res = await login({ email, password }).unwrap();
-      console.log(res);
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      toast.error(err?.data?.message || err.error || "Login failed");
     }
   };
 
   return (
-    <div>
-      <section className="pl-[10rem] flex flex-wrap">
-        <div className="mr-[4rem] mt-[5rem]">
-          <h1 className="text-2xl font-semibold mb-4 text-white">Sign In</h1>
+    <div className="min-h-screen bg-[#F4F1EA] pl-[90px]">
+      <div className="min-h-screen flex flex-col lg:flex-row">
+        {/* Form side */}
+        <div className="flex-1 flex items-center justify-center px-8 py-16">
+          <div className="w-full max-w-md">
+            <p className="text-xs tracking-[0.2em] uppercase text-[#8A8378] mb-3">
+              Welcome back
+            </p>
+            <h1 className="font-serif text-4xl text-[#1F2A24] mb-2">
+              Sign In
+            </h1>
+            <p className="text-[#5F5A54] mb-10">
+              Access your Kingsman account.
+            </p>
 
-          <form onSubmit={submitHandler} className="container w-[40rem]">
-            <div className="my-[2rem]">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-white"
+            <form onSubmit={submitHandler} className="space-y-6">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-[#1F2A24] mb-2"
+                >
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  autoComplete="email"
+                  className="w-full p-3 rounded-sm border border-[#DDD6C7] bg-white text-[#1F2A24] placeholder:text-[#A9A296] focus:outline-none focus:border-[#2D4A3E] transition-colors"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-[#1F2A24] mb-2"
+                >
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    autoComplete="current-password"
+                    className="w-full p-3 pr-11 rounded-sm border border-[#DDD6C7] bg-white text-[#1F2A24] placeholder:text-[#A9A296] focus:outline-none focus:border-[#2D4A3E] transition-colors"
+                    placeholder="Enter password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((s) => !s)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A8378] hover:text-[#2D4A3E]"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                disabled={isLoading}
+                type="submit"
+                className="w-full bg-[#2D4A3E] text-white py-3 rounded-sm font-medium tracking-wide hover:bg-[#233B31] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="mt-1 p-2 border rounded w-full text-white"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
+                {isLoading ? "Signing In..." : "Sign In"}
+              </button>
 
-            <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-white"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                className="mt-1 p-2 border rounded w-full text-white"
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+              {isLoading && <Loader />}
+            </form>
 
-            <button
-              disabled={isLoading}
-              type="submit"
-              className="bg-pink-500 text-white px-4 py-2 rounded cursor-pointer my-[1rem]"
-            >
-              {isLoading ? "Signing In..." : "Sign In"}
-            </button>
-
-            {isLoading && <Loader />}
-          </form>
-
-          <div className="mt-4">
-            <p className="text-white">
+            <p className="mt-8 text-[#5F5A54]">
               New Customer?{" "}
               <Link
                 to={redirect ? `/register?redirect=${redirect}` : "/register"}
-                className="text-pink-500 hover:underline"
+                className="text-[#2D4A3E] font-medium hover:underline"
               >
-                Register
+                Create an account
               </Link>
             </p>
           </div>
         </div>
-        <img
-          src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80"
-          alt=""
-          className="h-[65rem] w-[59%] xl:block md:hidden sm:hidden rounded-lg"
-        />
-      </section>
+
+        {/* Image side */}
+        <div className="hidden lg:block lg:flex-1 relative min-h-screen">
+          <img
+            src="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?auto=format&fit=crop&w=1200&q=80"
+            alt="Kingsman heritage tailoring"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+        </div>
+      </div>
     </div>
   );
 };
